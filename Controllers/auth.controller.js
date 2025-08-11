@@ -57,7 +57,8 @@ const registerUser = AsyncHandler(async(req,res)=>{
     console.log(accessToken, refreshToken);
     const options = {
         httpOnly:true,
-        secure:true
+        secure:true,
+        sameSite: "none"
     }
     return res.status(201)
     .cookie("accessToken",accessToken,options)
@@ -99,6 +100,7 @@ const loginUser = AsyncHandler(async(req , res)=>{
     const options = {
         httpOnly:true,
         secure: process.env.NODE_ENV === 'production',
+        sameSite: "none"
     }
     console.log("User logged in successfully");
     return res.status(200)
@@ -131,6 +133,7 @@ const logoutUser = AsyncHandler(async(req, res) => {
     const options = {
         httponly: true, // Prevents JavaScript access to the cookie
         secure: true, // Ensures the cookie is sent over HTTPS
+        sameSite: "none" // Allows cross-site cookie usage
     }
     console.log("User logged out successfully");
     return res.status(200)
@@ -206,7 +209,8 @@ const deleteAccount = AsyncHandler(async(req, res) => {
     await User.findByIdAndDelete(req.user._id);
     const options = {
         httpOnly: true,
-        secure: true
+        secure: true,
+        sameSite: "none" // Allows cross-site cookie usage
     }
     console.log("User account deleted successfully");
     return res.status(200)
