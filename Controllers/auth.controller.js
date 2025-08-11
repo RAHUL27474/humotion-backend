@@ -57,7 +57,8 @@ const registerUser = AsyncHandler(async(req,res)=>{
     console.log(accessToken, refreshToken);
     const options = {
         httpOnly:true,
-        secure:true
+        secure:true,
+        sameSite: "None" // Adjust based on your requirements
     }
     return res.status(201)
     .cookie("accessToken",accessToken,options)
