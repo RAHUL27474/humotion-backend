@@ -56,9 +56,9 @@ const registerUser = AsyncHandler(async(req,res)=>{
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
     console.log(accessToken, refreshToken);
     const options = {
-        httpOnly:true,
-        secure:true,
-        sameSite: "None" // Adjust based on your requirements
+        httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
     }
     return res.status(201)
     .cookie("accessToken",accessToken,options)
@@ -98,9 +98,9 @@ const loginUser = AsyncHandler(async(req , res)=>{
     const{accessToken, refreshToken} = await generateAccessAndRefreshToken(user._id);
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
     const options = {
-        httpOnly:true,
-        secure:true,
-        sameSite: "None" // Adjust based on your requirements
+        httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
     }
     console.log("User logged in successfully");
     return res.status(200)
@@ -131,9 +131,9 @@ const logoutUser = AsyncHandler(async(req, res) => {
         }
     );
     const options = {
-        httponly: true, // Prevents JavaScript access to the cookie
-        secure: true, // Ensures the cookie is sent over HTTPS
-        sameSite: "None" // Adjust based on your requirements
+        httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
     }
     console.log("User logged out successfully");
     return res.status(200)
