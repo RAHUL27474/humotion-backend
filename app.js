@@ -15,10 +15,7 @@ app.use(cors({
     credentials: true
 }));
 
-app.options('*', cors({
-    origin: ['http://localhost:8080', 'http://localhost:3000'],
-    credentials: true
-}));
+app.options(/.*/, cors());
 
 app.use(express.json());
 app.use(cookieParser());
